@@ -56,7 +56,8 @@ autoUpdater.on('update-downloaded', () => {
 });
 
 autoUpdater.on('download-progress', (progress) => {
-    const progressText = `Download speed: ${progress.bytesPerSecond} - Downloaded ${progress.percent}% (${progress.transferred} + '/' + ${progress.total} + )`;
+    mainWindow.webContents.executeJavaScript(`console.log('main | event download-progress', ${progress});`);
+    const progressText = `Downloaded ${Math.round(progress.percent)}%`;
     mainWindow.webContents.send('update_download_progress', progressText)
 });
 
@@ -65,17 +66,16 @@ ipcMain.on('restart_app', () => {
 });
 
 ipcMain.on('download-app-update', async () => {
+    mainWindow.webContents.send('update_downloading');
     await autoUpdater.downloadUpdate();
 
-    // mainWindow.webContents.send('update_downloading');
     // setTimeout(()=>{
     //     mainWindow.webContents.send('update_download_progress', 'Downloading 0');
     //     setTimeout(()=>{
     //         mainWindow.webContents.send('update_download_progress', 'Downloading final');
-    //         // setTimeout(()=>mainWindow.webContents.send('update_downloaded'),2000)
+    //         setTimeout(()=>mainWindow.webContents.send('update_downloaded'),2000)
     //     }, 5000)
     // }, 2000)
-    // setTimeout(()=>mainWindow.webContents.send('update_downloaded'),5000)
 
     console.log('main | download-app-update downloaded');
 })
