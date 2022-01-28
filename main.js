@@ -21,6 +21,7 @@ function createWindow () {
 
   mainWindow.once('ready-to-show', () => {
     autoUpdater.checkForUpdatesAndNotify();
+    // setTimeout(()=>mainWindow.webContents.send('update_available'), 3000);
   });
 
   mainWindow.webContents.openDevTools();
@@ -57,3 +58,12 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.on('restart_app', () => {
     autoUpdater.quitAndInstall();
 });
+
+ipcMain.on('download-app-update', async () => {
+    await autoUpdater.downloadUpdate();
+
+    // mainWindow.webContents.send('update_downloading');
+    // setTimeout(()=>mainWindow.webContents.send('update_downloaded'),5000)
+
+    console.log('main | download-app-update downloaded');
+})

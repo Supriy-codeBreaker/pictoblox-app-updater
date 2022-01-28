@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>PictoBlox Auto Updater</title>
+  <title>PictoBlox App Updater</title>
   <style>
     body {
       box-sizing: border-box;
@@ -26,13 +26,16 @@
   </style>
 </head>
 <body>
-  <h1>PictoBlox Auto Updater</h1>
+  <h1>PictoBlox App Updater</h1>
   <p id="version"></p>
   <div id="notification" class="hidden">
     <p id="message"></p>
-    <button id="close-button" onClick="closeNotification()">
+    <!-- <button id="close-button" onClick="closeNotification()">
       Close
-    </button>
+    </button> -->
+    <button id="download-button" onClick="downloadUpdate()">
+        Download Now
+      </button>
     <button id="restart-button" onClick="restartApp()" class="hidden">
       Restart
     </button>
@@ -50,12 +53,20 @@
 
     const notification = document.getElementById('notification');
     const message = document.getElementById('message');
+    const downloadButton = document.getElementById('download-button');
     const restartButton = document.getElementById('restart-button');
     
     ipcRenderer.on('update_available', () => {
         ipcRenderer.removeAllListeners('update_available');
-        message.innerText = 'A new update is available. Downloading now...';
+        message.innerText = 'A new update is available.';
         notification.classList.remove('hidden');
+    });
+
+    ipcRenderer.on('update_downloading', () => {
+        ipcRenderer.removeAllListeners('update_downloading');
+        message.innerText = 'Downloading your update...';
+        notification.classList.remove('hidden');
+        downloadButton.classList.add('hidden');
     });
 
     ipcRenderer.on('update_downloaded', () => {
@@ -70,6 +81,9 @@
     }
     function restartApp() {
         ipcRenderer.send('restart_app');
+    }
+    function downloadUpdate() {
+        ipcRenderer.send('download-app-update');
     }
   </script>
 </body>

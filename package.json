@@ -1,10 +1,23 @@
 {
   "name": "pictoblox-auto-updater",
-  "version": "2.5.0",
+  "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Supriy-codeBreaker/pictoblox-app-updater"
+  },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always"
+  },
+  "build": {
+    "appId": "com.supriycodebreaker.pictobloxappupdater",
+    "publish": {
+      "provider": "github",
+      "token": "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"
+    }
   },
   "keywords": [],
   "author": "",
