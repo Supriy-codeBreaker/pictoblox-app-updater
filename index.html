@@ -27,9 +27,11 @@
 </head>
 <body>
   <h1>PictoBlox App Updater</h1>
+  <img src="./electron-logo.jpg" width=200 height=200 alt="electron-logo">
   <p id="version"></p>
   <div id="notification" class="hidden">
     <p id="message"></p>
+    <p id="progress"></p>
     <!-- <button id="close-button" onClick="closeNotification()">
       Close
     </button> -->
@@ -53,6 +55,7 @@
 
     const notification = document.getElementById('notification');
     const message = document.getElementById('message');
+    const progress = document.getElementById('progress');
     const downloadButton = document.getElementById('download-button');
     const restartButton = document.getElementById('restart-button');
     
@@ -73,6 +76,11 @@
         ipcRenderer.removeAllListeners('update_downloaded');
         message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
         restartButton.classList.remove('hidden');
+        notification.classList.remove('hidden');
+    });
+
+    ipcRenderer.on('update_download_progress', (event, progressText) => {
+        progress.innerText = progressText;
         notification.classList.remove('hidden');
     });
 
