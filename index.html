@@ -76,6 +76,8 @@
         ipcRenderer.removeAllListeners('update_downloaded');
         message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
         restartButton.classList.remove('hidden');
+        downloadButton.classList.add('hidden');
+        progress.classList.add('hidden');
         notification.classList.remove('hidden');
     });
 
