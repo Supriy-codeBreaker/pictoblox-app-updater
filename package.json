@@ -1,11 +1,11 @@
 {
   "name": "pictoblox-auto-updater",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "",
   "main": "main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Supriy-codeBreaker/pictoblox-app-updater"
+    "url": "https://github.com/Supriy-codeBreaker/app-releases-repo"
   },
   "scripts": {
     "start": "electron .",
