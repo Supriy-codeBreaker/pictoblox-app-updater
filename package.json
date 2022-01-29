@@ -15,8 +15,7 @@
   "build": {
     "appId": "com.supriycodebreaker.pictobloxappupdater",
     "publish": {
-      "provider": "github",
-      "token": "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"
+      "provider": "github"
     }
   },
   "keywords": [],
