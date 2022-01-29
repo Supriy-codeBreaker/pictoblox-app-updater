@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 autoUpdater.autoDownload = false;
-
 let mainWindow;
 
 function createWindow () {
@@ -19,8 +18,15 @@ function createWindow () {
     mainWindow = null;
   });
 
-  mainWindow.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
+  mainWindow.once('ready-to-show', async () => {
+    if(app.isPackaged){
+      autoUpdater.checkForUpdatesAndNotify();
+    }
+    else{
+      console.log('ready-to-show | app not packaged!');
+      await autoUpdater.checkForUpdates();
+      // console.log('main | ready-to-show', result);
+    }
     // setTimeout(()=>mainWindow.webContents.send('update_available'), 3000);
   });
 
@@ -47,8 +53,10 @@ ipcMain.on('app_version', (event) => {
   event.sender.send('app_version', { version: app.getVersion() });
 });
 
-autoUpdater.on('update-available', () => {
-    mainWindow.webContents.send('update_available');
+autoUpdater.on('update-available', (updateInfo) => {
+  // mainWindow.webContents.executeJavaScript(`console.log('main | event update-available', ${updateInfo});`);
+  console.log('main | event update-available', updateInfo);
+  mainWindow.webContents.send('update_available', updateInfo.version);
 });
 
 autoUpdater.on('update-downloaded', () => {
@@ -56,7 +64,7 @@ autoUpdater.on('update-downloaded', () => {
 });
 
 autoUpdater.on('download-progress', (progress) => {
-    mainWindow.webContents.executeJavaScript(`console.log('main | event download-progress', ${progress});`);
+    // mainWindow.webContents.executeJavaScript(`console.log('main | event download-progress', ${progress});`);
     const progressText = `Downloaded ${Math.round(progress.percent)}%`;
     mainWindow.webContents.send('update_download_progress', progressText)
 });

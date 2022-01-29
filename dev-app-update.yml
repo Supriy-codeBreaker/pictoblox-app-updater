@@ -1,0 +1,4 @@
+owner: Supriy-codeBreaker
+repo: pictoblox-app-updater
+provider: github
+updaterCacheDirName: pictoblox-auto-updater-updater
